@@ -36,10 +36,13 @@ class GameInitializer {
         const inputTypeLowercase = inputType.toLowerCase();
         do {
             value = prompt(`Enter ${inputTypeLowercase} for Player ${i + 1}: `).trim();
-            if (set.has(value)) {
+            if(!value) {
+                console.log(`Invalid ${inputType}. Please enter a valid ${inputTypeLowercase}.`);
+            }
+            else if (set.has(value)) {
                 console.log(`${inputType} already taken. Choose another ${inputTypeLowercase}.`);
             }
-        } while (set.has(value));
+        } while (!value || set.has(value));
         set.add(value);
     
         return value;

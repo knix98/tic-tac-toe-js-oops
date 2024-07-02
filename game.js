@@ -6,9 +6,9 @@ class Game {
     }
 
     #otherPossibleMoves = {
-        "UNDO": Game.#undo,
-        "RESET": Game.#reset,
-        "EXIT": Game.#exit
+        "UNDO": this.#undo.bind(this),
+        "RESET": this.#reset.bind(this),
+        "EXIT": this.#exit
     }
 
     start() {
@@ -42,21 +42,21 @@ class Game {
         return false;
     }
 
-    static #undo(game) {
+    #undo() {
         // console.log('DEBUG : ', this, this.UNDO);
-        if (game.board.history.length === 0) {
+        if (this.board.history.length === 0) {
             return;
         }
-        game.board.undoMove();
-        game.#switchPlayer(-1);
+        this.board.undoMove();
+        this.#switchPlayer(-1);
     }
 
-    static #reset(game) {
-        game.board.reset();
-        game.currentPlayerIndex = 0;
+    #reset() {
+        this.board.reset();
+        this.currentPlayerIndex = 0;
     }
 
-    static #exit() {
+    #exit() {
         console.log("Exiting the game...");
         process.exit(0);
     }
