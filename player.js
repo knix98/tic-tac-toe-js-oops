@@ -1,5 +1,4 @@
 const prompt = require('prompt-sync')();
-const OtherMoves = require('./otherMoves');
 
 class Player {
     constructor(name, symbol) {
@@ -7,27 +6,17 @@ class Player {
         this.symbol = symbol;
     }
 
-    makeMove(game, board) {
-        let position;
-        let validMove = false;
+    makeMove(board, otherPossibleMoves) {
+        const input = prompt(`${this.name} (${this.symbol}), enter your move ((row,col) / ${otherPossibleMoves.join(' / ')}): `);
 
-        while (!validMove) {
-            const input = prompt(`${this.name} (${this.symbol}), enter your move (row,col): `);
-            position = input.split(',').map(Number);
+        const position = input.split(',').map(Number);
+        const validMove = board.makeMove(position, this.symbol);
 
-            validMove = board.makeMove(position, this.symbol);
-
-            if (!validMove) {
-                if (OtherMoves.move(input, game, board)) {
-                    return false;
-                }
-                else {
-                    console.log("Invalid move! Try again.");
-                }
-            }
+        if (!validMove) {
+            return { moveMade: false, input: input };
         }
 
-        return true;
+        return { moveMade: true, input: input };
     }
 }
 
